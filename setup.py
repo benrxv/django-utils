@@ -10,5 +10,5 @@ setup(name='Django Utilities',
       author='Benjamin Rosnick',
       author_email='benrxv@gmail.com',
       url='https://github.com/benrxv/django-utils',
-      packages=['django-utils']
+      packages=['django_utils']
 )
