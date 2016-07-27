@@ -14,15 +14,22 @@ class AjaxableResponseMixin(object):
             return response
 
     def form_valid(self, form):
-        # We make sure to call the parent's form_valid() method because
-        # it might do some processing (in the case of CreateView, it will
-        # call form.save() for example).
         response = super(AjaxableResponseMixin, self).form_valid(form)
         if self.request.is_ajax():
-            data = {
-                'pk': self.object.pk,
-            }
+            data = self.get_json_data()
             return JsonResponse(data)
         else:
-            return responsefrom django.http import JsonResponse
+            return response
 
+    def get_json_data(self, action=None):
+        object_str = str(self.object)
+        data = {
+            'pk': self.object.pk,
+            'success': True,
+            'object': object_str,
+            'action': action,
+            'message': object_str
+        }
+        if action:
+            data['message'] = "%s %s" % (object_str, action.upper())
+        return data
